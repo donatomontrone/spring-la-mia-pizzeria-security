@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+	<header>
+		<th:block th:replace="~{fragments/header :: header}"></th:block>
+	</header>
+	<main th:object="${ingredient}">
+		<div class="container">
+			<div class="row">
+				<h3>Modifica l'ingrediente [[*{#strings.toLowerCase(name)}]]</h3>
+			</div>
+			<form class="row g-3" method="POST">
+				<div class="col-md-6">
+					<label for="ingName" class="form-label">Nome dell'ingrediente</label>
+					<input type="text" th:class="${(errors != null && errors.hasFieldErrors('name')) ? 'is-invalid' : ''} + ' form-control'" id="ingName"
+						name="name" th:value="*{name}">
+					<div class="invalid-feedback"
+						th:if="${errors != null && errors.hasFieldErrors('name')}">
+						[[ ${errors.getFieldError('title').getDefaultMessage()} ]]
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="ingDscription" class="form-label">Descrizione</label>
+					<textarea th:class="${(errors != null && errors.hasFieldErrors('description')) ? 'is-invalid' : ''} + ' form-control'" id="ingDescription" rows="1"
+						name="description">[[*{description}]]</textarea>
+					<div class="invalid-feedback"
+						th:if="${errors != null && errors.hasFieldErrors('description')}">
+						[[ ${errors.getFieldError('description').getDefaultMessage()} ]]
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div th:each="pizza : ${pizzas}" th:object="${pizza}">
+						<input th:id="${'pizza-' + pizza.id}" th:value="*{id}" th:checked="${ingredient.pizzas.contains(pizza)}" type="checkbox" name="pizzas">
+						<label th:for="${'pizza-' + pizza.id}">[[ *{name} ]]</label>
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="d-flex justify-content-between">
+						<button type="submit" class="btn btn-outline-primary">
+							<i class="fa-regular fa-paper-plane"></i> Invia
+						</button>
+						<a th:href="@{/ingredients}" class="btn btn-outline-secondary"> <i
+							class="fa-solid fa-arrow-left"></i> Back
+						</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+	<header>
+		<div th:replace="~{fragments/header :: header}">
+		</div>
+	</header>
+	<main th:object="${pizza}">
+		<div class="container">
+			<div class="row">
+				<h3>Modifica pizza [[*{#strings.toLowerCase(name)}]]</h3>
+			</div>
+			<form class="row g-3" th:action="@{/pizzas/edit/{id} (id=*{id})}" method="POST">
+
+				<div class="col-md-6">
+					<label for="pizzaName" class="form-label">Nome della pizza</label>
+					<input type="text" th:class="${(errors != null && errors.hasFieldErrors('name')) ? 'is-invalid' : ''} + ' form-control'" id="pizzaName" name="name" th:value="*{name}">
+					<div class="invalid-feedback"
+						th:if="${errors != null && errors.hasFieldErrors('name')}">
+						[[ ${errors.getFieldError('name').getDefaultMessage()} ]]
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="imgPath" class="form-label">Url dell'immagine</label>
+					<input type="text" th:class="${(errors != null && errors.hasFieldErrors('imgPath')) ? 'is-invalid' : ''} + ' form-control'" id="imgPath" name="imgPath" th:value="*{imgPath}">
+					<div class="invalid-feedback"
+						th:if="${errors != null && errors.hasFieldErrors('imgPath')}">
+						[[ ${errors.getFieldError('imgPath').getDefaultMessage()} ]]
+					</div>
+				</div>
+				<div class="col-md-8">
+					<label for="description" class="form-label">Descrizione</label>
+					<textarea th:class="${(errors != null && errors.hasFieldErrors('description')) ? 'is-invalid' : ''} + ' form-control'" id="description" rows="1"
+						name="description">[[*{description}]]</textarea>
+					<div class="invalid-feedback"
+						th:if="${errors != null && errors.hasFieldErrors('description')}">
+						[[ ${errors.getFieldError('description').getDefaultMessage()} ]]
+					</div>
+				</div>
+				<div class="col-md-4">
+					<label for="price" class="form-label">Prezzo</label>
+					<div class="input-group">
+						<input type="number" th:class="${(errors != null && errors.hasFieldErrors('price')) ? 'is-invalid' : ''} + ' form-control text-end'" id="price"
+							name="price" th:value="*{price}">
+						<div class="input-group-text">,00 &euro;</div>
+						<div class="invalid-feedback"
+							th:if="${errors != null && errors.hasFieldErrors('price')}">
+							[[ ${errors.getFieldError('price').getDefaultMessage()} ]]</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div th:each="ingredient : ${ingredients}" th:object="${ingredient}">
+						<input th:id="${'ingredient-' + ingredient.id}" th:value="*{id}" th:checked="${pizza.ingredients.contains(ingredient)}" type="checkbox" name="ingredients">
+						<label th:for="${'ingredient-' + ingredient.id}">[[ *{name} ]]</label>
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="d-flex justify-content-between">
+						<button type="submit" class="btn btn-outline-primary">
+							<i class="fa-regular fa-paper-plane"></i> Invia
+						</button>
+						<a th:href="@{/}" class="btn btn-outline-secondary"> <i
+							class="fa-solid fa-arrow-left"></i> Back
+						</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+
+</html>

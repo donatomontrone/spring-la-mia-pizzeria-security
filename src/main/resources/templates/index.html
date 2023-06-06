@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+	<header>
+		<th:block th:replace="~{fragments/header :: header}">
+		</th:block>
+	</header>
+
+	<main>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 text-end">
+					<a th:href="@{/pizzas/create}" class="btn btn-sm btn-success"><i
+						class="fa-solid fa-plus"></i> Aggiungi</a>
+					<a th:href="@{/ingredients}" class="btn btn-sm btn-dark">Lista ingredienti</a>
+				</div>
+				<table class="table">
+					<thead>
+						<tr>
+
+							<th scope="col">#</th>
+							<th scope="col">Anteprima</th>
+							<th scope="col">Nome</th>
+							<th colspan="2" scope="col">Descrizione</th>
+							<th scope="col">Prezzo</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="pizza : ${pizzas}" th:object="${pizza}"
+							th:if="${pizzas.size() > 0}">
+							<th>[[*{id}]]</th>
+							<td><a th:href="@{/pizzas/{id} (id=*{id})}"><img
+									th:src="*{imgPath}" alt="Logo" width="80" height="66"
+									class="d-inline-block"></a></td>
+							<td><a th:href="@{/pizzas/{id} (id=*{id})}"
+								class="text-black text-decoration-none">[[*{name}]]</a></td>
+							<td colspan="2">[[*{description}]]</td>
+							<td>[[*{price}]],00&euro;</td>
+							<td><a th:href="@{/pizzas/{id} (id=*{id})}"
+								class="btn btn-sm btn-primary"><i
+									class="fa-solid fa-circle-info"></i></a> <a
+								th:href="@{/pizzas/edit/{id} (id=*{id})}"
+								class="btn btn-sm btn-warning"><i class="fa-solid fa-pen"></i></a>
+								<a th:href="@{/pizzas/delete/{id} (id=*{id})}"
+								class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a></td>
+						</tr>
+						<tr th:unless="${pizzas.size() > 0}">
+							<td colspan="7" class="text-center">Nessuna pizza trovata</td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>

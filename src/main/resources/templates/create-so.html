@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+	<header>
+		<th:block th:replace="~{fragments/header :: header}"></th:block>
+	</header>
+	<main th:object="${specialOffer}">
+		<div class="container">
+			<div class="row">
+				<h3>Aggiungi una nuova offerta speciale</h3>
+			</div>
+			<form class="row g-3" method="POST" action="/special-offers/create">
+				<div class ="col-md-2">
+				<label for="soTitle" class="form-label">Pizza ID</label>
+				<input type="text" readonly class="form-control" th:value="*{pizza.id}" name="pizza">
+				</div>
+				<div class="col-md-7">
+					<label for="soTitle" class="form-label">Titolo dell'offerta</label>
+					<input type="text" th:class="${(errors != null && errors.hasFieldErrors('title')) ? 'is-invalid' : ''} + ' form-control'" id="soTitle"
+						name="title" th:value="*{title}">
+					<div class="invalid-feedback"
+						th:if="${errors != null && errors.hasFieldErrors('title')}">
+						[[ ${errors.getFieldError('title').getDefaultMessage()} ]]
+					</div>
+				</div>
+				<div class="col-md-3">
+					<label for="soDiscountPerc" class="form-label">Percentuale di sconto</label>
+					<div class="input-group">
+						<input type="number" th:class="${(errors != null && errors.hasFieldErrors('discountPerc')) ? 'is-invalid' : ''} + ' form-control text-end'" id="soDiscountPerc"
+							name="discountPerc" th:value="*{discountPerc}">
+						<div class="input-group-text">%</div>
+						<div class="invalid-feedback"
+							th:if="${errors != null && errors.hasFieldErrors('discountPerc')}">
+							[[ ${errors.getFieldError('discountPerc').getDefaultMessage()} ]]</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="soStart" class="form-label">Data di inizio offerta</label>
+					<input type="date" th:class="${(errors != null && errors.hasFieldErrors('startDate')) ? 'is-invalid' : ''} + ' form-control'" id="soStart" name="startDate" th:value="*{startDate}">
+					<div class="invalid-feedback"
+						th:if="${errors != null && errors.hasFieldErrors('startDate')}">
+						[[ ${errors.getFieldError('startDate').getDefaultMessage()} ]]
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label for="soEnd" class="form-label">Data di fine offerta</label>
+					<input type="date" th:class="${(errors != null && errors.hasFieldErrors('endDate')) ? 'is-invalid' : ''} + ' form-control'" id="soEnd" name="endDate" th:value="*{endDate}">
+					<div class="invalid-feedback"
+						th:if="${errors != null && errors.hasFieldErrors('endDate')}">
+						[[ ${errors.getFieldError('endDate').getDefaultMessage()} ]]
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="d-flex justify-content-between">
+						<button type="submit" class="btn btn-outline-primary">
+							<i class="fa-regular fa-paper-plane"></i> Invia
+						</button>
+						<a th:href="@{/}" class="btn btn-outline-secondary"> <i
+							class="fa-solid fa-arrow-left"></i> Back
+						</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+
+</html>
