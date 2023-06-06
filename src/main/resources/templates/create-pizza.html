@@ -14,7 +14,7 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body>
+<body sec:authorize="hasAuthority('ADMIN')">
 	<header>
 		<th:block th:replace="~{fragments/header :: header}"></th:block>
 	</header>

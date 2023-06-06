@@ -23,7 +23,7 @@
 	<main>
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="col-12 text-end">
+				<div class="col-12 text-end" sec:authorize="hasAuthority('ADMIN')">
 					<a th:href="@{/pizzas/create}" class="btn btn-sm btn-success"><i
 						class="fa-solid fa-plus"></i> Aggiungi</a>
 					<a th:href="@{/ingredients}" class="btn btn-sm btn-dark">Lista ingredienti</a>
@@ -52,11 +52,11 @@
 							<td colspan="2">[[*{description}]]</td>
 							<td>[[*{price}]],00&euro;</td>
 							<td><a th:href="@{/pizzas/{id} (id=*{id})}"
-								class="btn btn-sm btn-primary"><i
-									class="fa-solid fa-circle-info"></i></a> <a
-								th:href="@{/pizzas/edit/{id} (id=*{id})}"
+								class="btn btn-sm btn-primary" ><i
+									class="fa-solid fa-circle-info"></i></a>
+									 <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/pizzas/edit/{id} (id=*{id})}"
 								class="btn btn-sm btn-warning"><i class="fa-solid fa-pen"></i></a>
-								<a th:href="@{/pizzas/delete/{id} (id=*{id})}"
+								<a sec:authorize="hasAuthority('ADMIN')" th:href="@{/pizzas/delete/{id} (id=*{id})}"
 								class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a></td>
 						</tr>
 						<tr th:unless="${pizzas.size() > 0}">
