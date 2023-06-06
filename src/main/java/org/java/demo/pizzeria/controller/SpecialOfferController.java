@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("special-offers")
 public class SpecialOfferController {
 	
 	@Autowired
@@ -27,7 +29,7 @@ public class SpecialOfferController {
 	@Autowired
 	private PizzaService pizzaService;
 	
-	@GetMapping("/special-offers/create")
+	@GetMapping("/create")
 	public String create(@RequestParam(name = "id") Integer pizzaId, Model model) {
 		
 		SpecialOffer specialOffer = new SpecialOffer();
@@ -41,7 +43,7 @@ public class SpecialOfferController {
 		return "create-so";
 	}
 	
-	@PostMapping("/special-offers/create")
+	@PostMapping("/create")
 	public String store(@Valid @ModelAttribute SpecialOffer specialOffer,
 		BindingResult bindingResult, Model model) {
 		
@@ -55,7 +57,7 @@ public class SpecialOfferController {
 		return "redirect:/pizzas/" + pizzaId;
 	}
 	
-	@GetMapping("/special-offers/edit/{id}")
+	@GetMapping("/edit/{id}")
 	public String edit(Model model, 
 			@PathVariable("id") Integer id) {
 		
@@ -67,7 +69,7 @@ public class SpecialOfferController {
 		return "edit-so";
 	}
 
-	@PostMapping("/special-offers/edit/{id}")
+	@PostMapping("/edit/{id}")
 	public String update(@PathVariable("id") Integer id, @Valid @ModelAttribute SpecialOffer specialOffer,
 			BindingResult bindingResult, Model model) {
 

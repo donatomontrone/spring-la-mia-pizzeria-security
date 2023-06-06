@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("/pizzas")
 public class PizzaController {
 	@Autowired
 	private PizzaService pizzaService;
@@ -28,7 +30,7 @@ public class PizzaController {
 	@Autowired
 	private IngredientService ingredientService;
 	
-	@GetMapping("/")
+	@GetMapping
 	public String index(Model model) {
 		
 		List<Pizza> pizzas = pizzaService.findAll();
@@ -37,7 +39,7 @@ public class PizzaController {
 		
 		return "index";
 	}
-	@PostMapping("/pizzas")
+	@PostMapping
 	public String getIndexByName(Model model, @RequestParam(required = false ) String name) {
 		List<Pizza> pizzas = pizzaService.findBySearch(name);
 		model.addAttribute("pizzas", pizzas);
@@ -46,7 +48,7 @@ public class PizzaController {
 		return "index";
 	}
 	
-	@GetMapping("/pizzas/{id}")
+	@GetMapping("/{id}")
 	public String show(Model model, 
 			@PathVariable("id") Integer id) {
 		
@@ -61,7 +63,7 @@ public class PizzaController {
 		return "pizza";
 	}
 	
-	@GetMapping("/pizzas/create")
+	@GetMapping("/create")
 	public String create(Model model) {
 		List<Ingredient> ingredients = ingredientService.findAll();
 		model.addAttribute("pizza", new Pizza());
@@ -69,7 +71,7 @@ public class PizzaController {
 		return "create-pizza";
 	}
 	
-	@PostMapping("/pizzas/create")
+	@PostMapping("/create")
 	public String store(@Valid @ModelAttribute Pizza pizza,
 		BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -83,20 +85,20 @@ public class PizzaController {
 		return "redirect:/pizzas/" + pizza.getId();
 	}
 	
-	@GetMapping("/pizzas/edit/{id}")
+	@GetMapping("/edit/{id}")
 	public String edit(Model model, 
 			@PathVariable("id") Integer id) {
 		
 		Optional<Pizza> oPizza = pizzaService.findByIdwithIngredients(id);
-		Pizza pizzas = oPizza.get();
+		Pizza pizza = oPizza.get();
 		List<Ingredient> ingredients = ingredientService.findAll();
-		model.addAttribute("pizzas", pizzas);
+		model.addAttribute("pizza", pizza);
 		model.addAttribute("ingredients", ingredients);
 		
 		return "edit-pizza";
 	}
 
-	@PostMapping("/pizzas/edit/{id}")
+	@PostMapping("/edit/{id}")
 	public String update(@PathVariable("id") Integer id, @Valid @ModelAttribute Pizza pizza,
 			BindingResult bindingResult, Model model) {
 
@@ -110,7 +112,7 @@ public class PizzaController {
 		return "redirect:/pizzas/{id}";
 	}
 	
-	@GetMapping("/pizzas/delete/{id}")
+	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Integer id) {
 		Optional<Pizza> oPizza = pizzaService.findById(id);
 		Pizza pizza = oPizza.get();

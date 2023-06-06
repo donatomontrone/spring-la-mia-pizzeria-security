@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home</title>
-<link rel="stylesheet"
+<link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -20,19 +20,20 @@
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-10">
-					<div class="card mb-3" th:object="${pizza}">
+					<div class="card my-3" th:object="${pizza}">
 						<div class="row g-0">
 							<div class="col-12">
-								<div class="card-header d-flex justify-content-between">
-								<!--  richiedendo l'ID della pizza -->
-									<a th:href="@{'/special-offers/create?id='+ *{id}}" class="btn btn-sm btn-dark"><i
-										class="fa-solid fa-plus"></i> Aggiungi un'offerta speciale</a>
+								<div class="card-header d-flex justify-content-between"
+									sec:authorize="hasAuthority('ADMIN')">
+									<!--  richiedendo l'ID della pizza -->
+									<a th:href="@{'/special-offers/create?id='+ *{id}}"
+										class="btn btn-sm btn-dark"><i class="fa-solid fa-plus"></i>
+										Aggiungi un'offerta speciale</a>
 									<div class="buttons">
 
 										<a th:href="@{/pizzas/edit/{id} (id=*{id})}"
 											class="btn btn-sm btn-warning"><i class="fa-solid fa-pen"></i>
-											Edit</a>
-										<a th:href="@{/pizzas/delete/{id} (id=*{id})}"
+											Edit</a> <a th:href="@{/pizzas/delete/{id} (id=*{id})}"
 											class="btn btn-sm btn-danger"><i
 											class="fa-solid fa-trash"></i> Delete</a>
 									</div>
@@ -46,24 +47,30 @@
 								<div class="card-body">
 									<h4 class="card-title">[[*{name}]]</h4>
 									<p class="card-text">[[*{description}]]</p>
-									<p class="card-text">
-										[[*{price}]],00 &euro;
-									</p>
-									<small class="text-secondary d-block" th:each="offer : ${specialOffers}" th:object="${offer}">
+									<p class="card-text">[[*{price}]],00 &euro;</p>
+									<small class="text-secondary d-block"
+										th:each="offer : ${specialOffers}" th:object="${offer}">
 										<span>[[*{title} + ':']]</span>
 										<span class="fw-semibold"> [[${offer.getDiscount(pizza.price)}]]</span>
 									</small>
+									 <small class="card-text">
+									 <span>Ingredienti: </span>
+									<span class="card-text fw-semibold" th:each="ing, index : ${ingredients}" th:object="${ing}"> [[*{name}]]<span th:unless="${index.last}">,</span>
+									</span>
+
+									</small>
 								</div>
 							</div>
-							<div class ="col-12">
-								<div class ="card-body">
-									<p class="card-text" th:each="ing : ${ingredients}" th:object="${ing}">[[*{name}]]</p>
-								</div>
-							</div>
+
+
 							<div class="col-12">
 								<div class="card-footer text-center">
 									<span th:each="offer : ${specialOffers}" th:object="${offer}">
-										<span class="badge rounded-pill text-bg-primary text-white">[[*{title}]] |  <a class="text-white" th:href="@{/special-offers/edit/{id} (id=${offer.id})}"><i class="fa-regular fa-pen-to-square"></i></a></span>
+										<span class="badge rounded-pill text-bg-primary text-white">[[*{title}]]
+											<a class="text-white" sec:authorize="hasAuthority('ADMIN')"
+											th:href="@{/special-offers/edit/{id} (id=${offer.id})}"><i
+												class="fa-regular fa-pen-to-square"></i></a>
+									</span>
 									</span>
 								</div>
 							</div>
@@ -77,6 +84,6 @@
 			</div>
 		</div>
 	</main>
-	 
+
 </body>
 </html>

@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import org.java.demo.pizzeria.auth.pojo.Role;
+import org.java.demo.pizzeria.auth.pojo.User;
+import org.java.demo.pizzeria.auth.service.RoleService;
+import org.java.demo.pizzeria.auth.service.UserService;
 import org.java.demo.pizzeria.pojo.Ingredient;
 import org.java.demo.pizzeria.pojo.Pizza;
 import org.java.demo.pizzeria.pojo.SpecialOffer;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class SpringLaMiaPizzeriaCrudApplication implements CommandLineRunner{
@@ -27,12 +32,38 @@ public class SpringLaMiaPizzeriaCrudApplication implements CommandLineRunner{
 	@Autowired
 	private IngredientService ingredientService;
 	
+	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
+	private UserService userService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringLaMiaPizzeriaCrudApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Role user = new Role("USER");
+		Role admin = new Role("ADMIN");
+		
+		roleService.save(user);
+		roleService.save(admin);
+		
+		
+		final String password = new BCryptPasswordEncoder().encode("11223344");
+		final String password2 = new BCryptPasswordEncoder().encode("user");
+		
+		User adminUser = new User("gamblerid", password, admin);
+		User userUser = new User("user", password2, user);
+		
+		
+		userService.save(userUser);
+		userService.save(adminUser);
+		
+		
+		
 		
 		List<Ingredient> ingredients = Arrays.asList(
 				new Ingredient("Pomodoro","Pomodoro italiano dal sapore intenso"),
