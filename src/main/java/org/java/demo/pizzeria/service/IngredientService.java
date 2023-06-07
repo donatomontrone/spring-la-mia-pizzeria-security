@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.hibernate.Hibernate;
 import org.java.demo.pizzeria.pojo.Ingredient;
-import org.java.demo.pizzeria.pojo.Pizza;
 import org.java.demo.pizzeria.repo.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

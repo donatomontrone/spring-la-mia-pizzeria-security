@@ -19,12 +19,12 @@ public class AuthConfiguration {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		return http.authorizeHttpRequests( a -> a
-				.requestMatchers("/pizzas/**").hasAnyAuthority("USER", "ADMIN")
 				.requestMatchers("/pizzas/create").hasAuthority("ADMIN")
 				.requestMatchers("/pizzas/edit/**").hasAuthority("ADMIN")
 				.requestMatchers("/pizzas/delete/**").hasAuthority("ADMIN")
 				.requestMatchers("/special-offers/**").hasAuthority("ADMIN")
 				.requestMatchers("/ingredients/**").hasAuthority("ADMIN")
+				.requestMatchers("/pizzas/**").hasAnyAuthority("USER", "ADMIN")
 				.requestMatchers("/**").permitAll()
 				).formLogin(f -> f.permitAll().defaultSuccessUrl("/")
 				).logout(l -> l.logoutSuccessUrl("/login")

@@ -92,6 +92,21 @@ public class SpecialOffer {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+
+		if (!(obj instanceof SpecialOffer)) return false;
+
+		SpecialOffer specialOffer = (SpecialOffer) obj;
+
+		return getId() == specialOffer.getId();
+	}
+	@Override
+	public int hashCode() {
+
+		return getId();
+	}
+	
+	@Override
 	public String toString() {
 		return "[" +  getId() + "] " + getTitle()
 				+ "\nL'offerta inizia il: " + getStartDate() + " e termina " + getEndDate() + " - Pizza " + getPizza();
