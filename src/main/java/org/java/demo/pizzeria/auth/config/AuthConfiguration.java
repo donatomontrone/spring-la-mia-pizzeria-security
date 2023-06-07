@@ -3,6 +3,7 @@ package org.java.demo.pizzeria.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,10 +19,11 @@ public class AuthConfiguration {
 	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		return http.authorizeHttpRequests( a -> a
-				.requestMatchers("/pizzas/create").hasAuthority("ADMIN")
-				.requestMatchers("/pizzas/edit/**").hasAuthority("ADMIN")
-				.requestMatchers("/pizzas/delete/**").hasAuthority("ADMIN")
+		return http.csrf(c-> c.disable())
+				.authorizeHttpRequests( a -> a
+				.requestMatchers("/*/create/**").hasAuthority("ADMIN")
+				.requestMatchers("/*/edit/**").hasAuthority("ADMIN")
+				.requestMatchers("/*/delete/**").hasAuthority("ADMIN")
 				.requestMatchers("/special-offers/**").hasAuthority("ADMIN")
 				.requestMatchers("/ingredients/**").hasAuthority("ADMIN")
 				.requestMatchers("/pizzas/**").hasAnyAuthority("USER", "ADMIN")

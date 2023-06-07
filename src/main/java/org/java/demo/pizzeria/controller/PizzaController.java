@@ -121,10 +121,7 @@ public class PizzaController {
 		Optional<Pizza> pizzaOpt = pizzaService.findByIdwithIngredientsAndOffer(id);
 		Pizza pizza = pizzaOpt.get();
 
-		for (SpecialOffer sp : pizza.getSpecialOffers()) {
-			specialOfferService.delete(sp);
-		}
-		
+	
 		pizzaService.delete(pizza);
 		return "redirect:/pizzas";
 	}

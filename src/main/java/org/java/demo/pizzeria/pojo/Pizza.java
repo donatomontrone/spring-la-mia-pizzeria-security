@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.URL;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,7 +45,7 @@ public class Pizza {
 	@Max(value=25,message="Il prezzo della pizza non può superare i 25,00€.")
 	private Integer price;
 	
-	@OneToMany(mappedBy = "pizza")
+	@OneToMany(mappedBy = "pizza", cascade = CascadeType.REMOVE)
 	private List<SpecialOffer> specialOffers;
 	
 	@ManyToMany
